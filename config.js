@@ -1,5 +1,5 @@
 const config = {
-    localStoragePrefix: "precure-party-rank-sorter",
-    title: "precure pr",
+    localStoragePrefix: "絶対変える",
+    title: "適当",
     description: "-"
 };
