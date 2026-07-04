@@ -147,6 +147,8 @@ function showDuel(id1, id2) {
         autoPlaySequential();
 }
 
+}     
+
 function autoPlaySequential() {
     if (!autoPlay) return;
 
