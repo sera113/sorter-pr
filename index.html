@@ -22,19 +22,36 @@
 <body>
 
   <div class="modal-overlay" id="modalOverlay" onclick="closeSettings()"></div>
+
   <div class="modal" id="settingsModal">
     <h2>Settings</h2>
+
     <div class="option-group">
       <p>Format:</p>
       <button class="option-button active" data-type="format" onclick="selectOption('format', this)">Video</button>
       <button class="option-button" data-type="format" onclick="selectOption('format', this)">Audio</button>
     </div>
+
     <div class="option-group">
       <p>Region:</p>
       <button class="option-button active" data-type="region" onclick="selectOption('region', this)">Europe</button>
       <button class="option-button" data-type="region" onclick="selectOption('region', this)">NA West</button>
       <button class="option-button" data-type="region" onclick="selectOption('region', this)">NA East</button>
     </div>
+
+    <div class="option-group">
+      <p>Autoplay:</p>
+
+      <label>
+        <input
+          type="checkbox"
+          id="autoplayCheckbox"
+          checked
+          onchange="toggleAutoplay(this)">
+        Sequential autoplay
+      </label>
+    </div>
+
     <button class="close-button" onclick="closeSettings()">Close</button>
   </div>
 
