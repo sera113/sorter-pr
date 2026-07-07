@@ -21,8 +21,9 @@
 
 <body>
 
-  <div class="modal-overlay" id="modalOverlay" onclick="closeSettings()"></div>
+  <div class="modal-overlay" id="modalOverlay" onclick="closeSettings(); closeFavorites();"></div>
 
+  <!-- Settings -->
   <div class="modal" id="settingsModal">
     <h2>Settings</h2>
 
@@ -55,6 +56,20 @@
     <button class="close-button" onclick="closeSettings()">Close</button>
   </div>
 
+  <!-- Favorites -->
+  <div class="modal" id="favoritesModal">
+
+    <h2>Favorites</h2>
+
+    <div id="favoritesList"></div>
+
+    <button class="close-button" onclick="closeFavorites()">
+      Close
+    </button>
+
+  </div>
+
+  <!-- Main -->
   <div id="main" class="main-page">
 
     <div class="title">Press "Start" to begin sorting.</div>
@@ -63,6 +78,10 @@
       <button id="settings" class="basic-button" onclick="showSettings()">Settings</button>
       <button id="start" class="basic-button" onclick="start()">Start</button>
       <button id="load" class="basic-button" onclick="loadProgress()">Load</button>
+
+      <button id="favorites" class="basic-button" onclick="showFavorites()">
+          Favorites
+      </button>
     </div>
 
     <div id="duel" class="duel-container"></div>
