@@ -127,6 +127,11 @@ body {
   height: 2em;
   margin-left: 10px;
   margin-right: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
 .basic-button:hover {
@@ -169,13 +174,19 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   backdrop-filter: blur(3px); /* Add blur effect for glassmorphism */
+
+  position: relative;
 }
 
 .music-card .anime {
-  align-content: center;
-  font-size: 2.2vh;
-  color: #a0ffac;
-  height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+
+    font-size: 2.2vh;
+    color: #a0ffac;
+    height: 10%;
 }
 
 .music-card .song {
@@ -185,7 +196,7 @@ body {
   height: 10%;
 }
 
-.music-card button {
+.music-card button.pick-button {
   padding: 10px;
   background-color: #40ab47a6;
   color: #e5e5e5;
@@ -198,7 +209,7 @@ body {
   box-sizing: border-box;
 }
 
-.music-card button:hover {
+.music-card button.pick-button:hover {
   background-color: #45a049;
 }
 
@@ -309,4 +320,104 @@ td {
 table th,
 table td {
   text-overflow: ellipsis;
+}
+
+.favorite-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: none;
+    border: none;
+
+    width: 24px;
+    height: 24px;
+
+    padding: 0;
+    margin: 0;
+
+    color: #888;
+    font-size: 22px;
+    line-height: 1;
+
+    cursor: pointer;
+    transition: .2s;
+    flex-shrink: 0;
+}
+
+.favorite-button:hover {
+    transform: scale(1.2);
+}
+
+.favorite-button.active {
+    color: gold;
+    text-shadow: 0 0 8px gold;
+}
+
+#favoritesList {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+#favoritesList div {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(255,255,255,.15);
+    color: white;
+    font-family: monospace;
+}
+
+#favoritesList a {
+    color: #7fc7ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#favoritesList a:hover {
+    text-decoration: underline;
+}
+
+#favoritesModal {
+    width: 900px;
+    max-width: 90vw;
+    max-height: 80vh;
+}
+
+#favoritesList {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+#favoritesTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+#favoritesTable th,
+#favoritesTable td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,.15);
+}
+
+#favoritesTable th {
+    background: rgba(255,255,255,.08);
+    font-weight: bold;
+}
+
+#favoritesTable a {
+    color: #7fc7ff;
+    text-decoration: none;
+}
+
+#favoritesTable a:hover {
+    text-decoration: underline;
+}
+
+.favorite-remove:hover {
+    transform: scale(1.2);
+}
+
+.favorite-remove.active {
+    color: gold;
 }
