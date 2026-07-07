@@ -29,6 +29,16 @@ let video = true;
 let region = "eu";
 
 let autoPlay = true;
+let favorites = [];
+
+const savedFavorites = JSON.parse(
+    localStorage.getItem(`${config.localStoragePrefix}-favorites`)
+);
+
+if (savedFavorites !== null) {
+    favorites = savedFavorites;
+}
+
 
 fetch('songList.json')
     .then(response => response.json())
@@ -84,6 +94,8 @@ function showDuel(id1, id2) {
     function createMusicCard(music, isLeft) {
         const card = document.createElement('div');
         card.className = 'music-card';
+        
+        const isFavorite = favorites.includes(music.id);
 
         let videoElement;
 
@@ -114,12 +126,36 @@ function showDuel(id1, id2) {
         }
 
         card.innerHTML = `
-      ${videoElement}
-      <div class="anime">${music.anime}</div>
-      <div class="song">${music.name}</div>
-    `;
+    ${videoElement}
 
+    <div class="anime">
+        <button class="favorite-button ${isFavorite ? "active" : ""}">
+            ${isFavorite ? "★" : "☆"}
+        </button>
+
+        <span>${music.anime}</span>
+    </div>
+
+    <div class="song">${music.name}</div>
+`;
+
+        const favoriteButton = card.querySelector(".favorite-button");
+
+favoriteButton.addEventListener("click", (e) => {
+
+    e.stopPropagation();
+
+    toggleFavorite(music.id);
+
+    favoriteButton.classList.toggle("active");
+
+    favoriteButton.textContent =
+        favorites.includes(music.id) ? "★" : "☆";
+
+});
+        
         const button = document.createElement('button');
+        button.classList.add("pick-button");
         button.textContent = "PICK";
         button.addEventListener('click', () => {
             if (isLeft) {
@@ -416,9 +452,103 @@ function showSettings() {
     document.getElementById("modalOverlay").style.display = "block";
 }
 
+function showFavorites() {
+
+    closeSettings();
+
+    renderFavorites();
+
+    document.getElementById("favoritesModal").style.display = "block";
+    document.getElementById("modalOverlay").style.display = "block";
+}
+
 function closeSettings() {
     document.getElementById("settingsModal").style.display = "none";
     document.getElementById("modalOverlay").style.display = "none";
+}
+
+function closeFavorites() {
+
+    document.getElementById("favoritesModal").style.display = "none";
+    document.getElementById("modalOverlay").style.display = "none";
+
+}
+
+function renderFavorites() {
+
+    const list = document.getElementById("favoritesList");
+
+    list.innerHTML = `
+    <table id="favoritesTable">
+        <thead>
+            <tr>
+                <th>★</th>
+                <th>ID</th>
+                <th>Anime</th>
+                <th>Song</th>
+                <th>Video</th>
+                <th>MP3</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    `;
+
+    const tbody = document.querySelector("#favoritesTable tbody");
+
+    [...favorites]
+        .sort((a, b) => a - b)
+        .forEach(id => {
+
+        const music = musicData.find(m => m.id === id);
+
+        if (!music) return;
+
+    const row = document.createElement("tr");
+
+    const songInfo = music.name.replace(" - ", " by ");
+
+    const videoLink = music.video
+        ? `<a href="${music.video}" target="_blank">Video</a>`
+        : "-";
+
+    const mp3Link = music.mp3
+        ? `<a href="${music.mp3}" target="_blank">MP3</a>`
+        : "-";
+
+    row.innerHTML = `
+        <td><button class="favorite-button active">★</button></td>
+        <td>${music.id}</td>
+        <td>${music.anime}</td>
+        <td>${songInfo}</td>
+        <td>${videoLink}</td>
+        <td>${mp3Link}</td>
+    `;
+
+    const favoriteButton = row.querySelector(".favorite-button");    
+
+    favoriteButton.addEventListener("click", () => {
+
+    toggleFavorite(music.id);
+
+    if (favorites.includes(music.id)) {
+
+        favoriteButton.classList.add("active");
+        favoriteButton.textContent = "★";
+
+    } else {
+
+        favoriteButton.classList.remove("active");
+        favoriteButton.textContent = "☆";
+
+    }
+
+});
+    tbody.appendChild(row);
+
+});
+
 }
 
 function selectOption(type, element) {
@@ -463,6 +593,20 @@ function toggleAutoplay(checkbox) {
     localStorage.setItem(
         `${config.localStoragePrefix}-autoPlay`,
         JSON.stringify(autoPlay)
+    );
+}
+
+function toggleFavorite(id) {
+
+    if (favorites.includes(id)) {
+        favorites = favorites.filter(x => x !== id);
+    } else {
+        favorites.push(id);
+    }
+
+    localStorage.setItem(
+        `${config.localStoragePrefix}-favorites`,
+        JSON.stringify(favorites)
     );
 }
 
@@ -577,6 +721,7 @@ function loadProgress() {
         button1.addEventListener("click", undo);
 
         let container = document.querySelector(".button-container");
+
         container.appendChild(button1);
 
         document.querySelector('.progress-container').removeAttribute("hidden");
